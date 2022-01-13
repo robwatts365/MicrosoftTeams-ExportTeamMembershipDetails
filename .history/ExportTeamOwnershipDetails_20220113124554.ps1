@@ -36,6 +36,7 @@ BECAUSE SOME STATES DO NOT ALLOW THE EXCLUSION OR LIMITATION OF LIABILITY FOR CO
 # Get Date information
 $Date = $(Get-Date).ToString("yyyy-MM-dd")
 
+
 # Import Teams Module
 Import-Module MicrosoftTeams
 
@@ -52,6 +53,7 @@ $SaveChooser.initialDirectory = $initialDirectory
 $SaveChooser.filter = "All files (*.csv)| *.csv"
 $SaveChooser.ShowDialog() | Out-Null
 $SaveFile = $SaveChooser.filename
+
 
 # Gets all teams in the tenant, saves the Team Name and Group ID for later
 Get-Team | foreach-Object {
@@ -71,6 +73,5 @@ Get-Team | foreach-Object {
         
     }
 }
-
 #Collates all data and saves in a CSV file. 
 $data | Export-CSV "$SaveFile" -NoTypeInformation
