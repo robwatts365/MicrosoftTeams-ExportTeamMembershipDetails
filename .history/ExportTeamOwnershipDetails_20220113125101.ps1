@@ -48,7 +48,6 @@ Connect-MicrosoftTeams
 [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms") | Out-Null
 
 # File Saver  (Set File Path - Open File Browser)
-Write-Host "Please select the save location."
 $SaveChooser = New-Object -Typename System.Windows.Forms.SaveFileDialog
 $SaveChooser.initialDirectory = $initialDirectory
 $SaveChooser.filter = "All files (*.csv)| *.csv"
@@ -76,5 +75,3 @@ Get-Team | foreach-Object {
 
 #Collates all data and saves in a CSV file. 
 $data | Export-CSV "$SaveFile" -NoTypeInformation
-
-Write-Host "Done. Your export is saved to $SaveFile."
