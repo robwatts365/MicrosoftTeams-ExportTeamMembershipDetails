@@ -40,23 +40,38 @@ Import-Module MicrosoftTeams
 Write-Host "Connecting to Microsoft Teams..."
 Connect-MicrosoftTeams
 
-# Gets all teams in the tenant, saves the Team Name and Group ID for later
+<# # Get Teams
 Get-Team | foreach-Object {
     $TeamName=$_.DisplayName
     $GroupID=$_.GroupID
 
-#For Each Team, it gets each member and saves user data (Name, UPN, Role (Owner/Member)) to export
     Get-TeamUser -GroupID $GroupID | ForEach-Object {
-        $Row = "" | Select-Object TeamName,GroupID,UserUPN,UserName,UserRole
+        $UserUPN=$_.user
+        $UserName=$_.name
+        $UserRole=$_.Role
+    
+        $Row=@{"Team Name"=$TeamName;"User Name"=$UserName;"User UPN"=$UserUPN;"User Role"=$UserRole};
+        $Data = New-Object PSObject -Property $TableRecord
+        $Data | Format-Table | Export-csv .\Owners.csv
+    }
+}
+#>
+
+# Get Teams
+$data =@()
+Get-Team | foreach-Object {
+    $TeamName=$_.DisplayName
+    $GroupID=$_.GroupID
+    $row = "" | Select-Object TeamName,GroupID,UserUPN,UserName,UserRole
+    $row.TeamName=$TeamName
+    $row.GroupID=$GroupID
+
+    Get-TeamUser -GroupID $GroupID | ForEach-Object {
         $Row.UserUPN=$_.user
         $Row.UserName=$_.name
         $Row.UserRole=$_.Role
-        $row.TeamName=$TeamName
-        $row.GroupID=$GroupID
-        $data =@($data)
         $data += $row 
         
     }
 }
-#Collates all data and saves in a CSV file. 
 $data | Format-Table -AutoSize | Export-CSV ./Owners.csv
