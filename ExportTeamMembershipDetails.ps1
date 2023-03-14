@@ -1,5 +1,5 @@
 <# 
-Export Microsoft Teams Team Ownership Information
+Export Microsoft Teams Team Membership Information
     Version: v1.0
     Date: 13/01/2022
     Author: Rob Watts - Customer Engineer - Microsoft
